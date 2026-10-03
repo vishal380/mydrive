@@ -1,0 +1,680 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>MyDrive</title>
+
+    <link
+        rel="stylesheet"
+        href="/css/style.css?v=folder-public-link"
+    >
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         MAIN DRIVE LAYOUT
+    ====================================================== -->
+
+    <div class="drive-layout">
+
+
+        <!-- =================================================
+             SIDEBAR
+        ================================================== -->
+
+        <aside class="sidebar">
+
+
+            <!-- LOGO -->
+
+            <div class="drive-logo">
+
+                <span>☁</span>
+
+                <span>
+                    MyDrive
+                </span>
+
+            </div>
+
+
+            <!-- UPLOAD BUTTON -->
+
+            <div class="new-menu-wrap">
+                <button id="newButton" class="new-button" type="button" aria-expanded="false" aria-haspopup="menu">
+                    + New
+                </button>
+                <div id="newMenu" class="new-menu" role="menu" hidden>
+                    <button id="createFolderButton" type="button" role="menuitem">New Folder</button>
+                    <button id="chooseFilesButton" type="button" role="menuitem">Upload files</button>
+                    <button id="chooseFolderButton" type="button" role="menuitem">Upload folder</button>
+                </div>
+            </div>
+
+
+            <!-- HIDDEN FILE INPUT -->
+
+            <input
+                type="file"
+                id="fileInput"
+                multiple
+                hidden
+            >
+            <input type="file" id="folderInput" webkitdirectory directory multiple hidden>
+
+
+            <!-- NAVIGATION -->
+
+            <nav class="sidebar-nav">
+
+                <a
+                    href="#"
+                    class="active"
+                >
+                    🏠
+                    <span>
+                        My Drive
+                    </span>
+                </a>
+
+                <a href="#">
+                    ⭐
+                    <span>
+                        Starred
+                    </span>
+                </a>
+
+                <div class="trash-nav-item">
+                    <a href="/trash.html">
+                        🗑
+                        <span>
+                            Trash
+                        </span>
+                    </a>
+                    <button id="selectionMenuButton" class="nav-selection-menu-button" type="button" aria-label="Selected file actions" aria-expanded="false" hidden>⋮</button>
+                    <div id="selectionMenu" class="selection-menu nav-selection-menu" hidden>
+                        <button type="button" data-selection-action="open" disabled>Open</button>
+                        <button type="button" data-selection-action="download">Download</button>
+                        <button type="button" data-selection-action="share">Share</button>
+                        <button type="button" data-selection-action="properties" disabled>Properties</button>
+                        <button type="button" data-selection-action="modify" disabled>Modify</button>
+                        <button id="moveSelectedToTrashButton" type="button" data-selection-action="trash">Move to Trash</button>
+                    </div>
+                </div>
+
+            </nav>
+
+
+            <!-- STORAGE -->
+
+            <div class="storage-box">
+
+                <h4>
+                    Storage
+                </h4>
+
+                <div class="storage-bar">
+
+                    <div
+                        id="storageProgress"
+                        class="storage-progress"
+                    ></div>
+
+                </div>
+
+                <p id="storageText">
+                    Loading storage...
+                </p>
+
+            </div>
+
+
+        </aside>
+
+
+
+        <!-- =================================================
+             MAIN CONTENT
+        ================================================== -->
+
+        <main class="drive-main">
+
+
+            <!-- =================================================
+                 HEADER
+            ================================================== -->
+
+            <header class="drive-header">
+
+                <div>
+
+                    <h1>
+                        My Drive
+                    </h1>
+
+                    <p id="welcomeText">
+                        Loading...
+                    </p>
+
+                </div>
+
+
+                <!-- LOGOUT -->
+
+                <button
+                    id="logoutButton"
+                    class="logout-button"
+                    type="button"
+                >
+                    Logout
+                </button>
+
+            </header>
+
+
+
+            <!-- =================================================
+                 UPLOAD MESSAGE
+            ================================================== -->
+
+            <div
+                id="uploadMessage"
+                class="upload-message"
+                role="status"
+                aria-live="polite"
+            >
+                <div id="uploadStatus">Preparing upload…</div>
+                <progress id="uploadProgressBar" max="100" value="0" aria-label="Upload progress"></progress>
+            </div>
+
+
+
+            <!-- =================================================
+                 FILE SECTION
+            ================================================== -->
+
+            <section>
+
+                <nav id="folderBreadcrumbs" class="folder-breadcrumbs" aria-label="Folder path"></nav>
+
+
+                <div class="section-header">
+
+                    <h2>
+                        Files
+                    </h2>
+
+
+                    <button
+                        id="refreshButton"
+                        class="refresh-button"
+                        type="button"
+                    >
+                        ↻ Refresh
+                    </button>
+
+                    <label class="select-all-control">
+                        <input type="checkbox" id="selectAllFiles">
+                        Select all
+                    </label>
+
+                </div>
+
+                <div id="selectionToolbar" class="selection-toolbar" hidden>
+                    <span id="selectedCount">0 selected</span>
+                </div>
+
+
+
+                <!-- FILE GRID -->
+
+                <div
+                    id="fileGrid"
+                    class="file-grid"
+                >
+
+                    <div class="loading">
+                        Loading files...
+                    </div>
+
+                </div>
+
+
+            </section>
+
+
+        </main>
+
+    </div>
+
+    <div id="newFolderModal" class="app-form-overlay" hidden>
+        <form id="newFolderForm" class="app-form-dialog" role="dialog" aria-modal="true" aria-labelledby="newFolderTitle">
+            <h2 id="newFolderTitle">Create folder</h2>
+            <label for="newFolderName">Folder name</label>
+            <input id="newFolderName" name="name" maxlength="150" required autocomplete="off">
+            <p id="newFolderError" class="app-form-error" role="alert"></p>
+            <div class="app-form-actions">
+                <button id="cancelNewFolder" type="button" class="app-confirm-cancel">Cancel</button>
+                <button type="submit" class="app-confirm-accept">Create</button>
+            </div>
+        </form>
+    </div>
+
+
+
+    <!-- =====================================================
+         SHARE MODAL
+    ====================================================== -->
+
+    <div
+        id="shareModal"
+        class="share-modal"
+    >
+
+
+        <div class="share-dialog">
+
+
+            <!-- =================================================
+                 SHARE HEADER
+            ================================================== -->
+
+            <div class="share-header">
+
+
+                <div>
+
+                    <h2>
+                        Share
+                    </h2>
+
+
+                    <div
+                        id="shareFileName"
+                        class="share-file-name"
+                    >
+                        File
+                    </div>
+
+                </div>
+
+
+                <!-- CLOSE -->
+
+                <button
+                    type="button"
+                    id="closeShareModal"
+                    class="share-close"
+                    aria-label="Close"
+                >
+                    ×
+                </button>
+
+
+            </div>
+
+
+
+            <!-- =================================================
+                 SHARE WITH PEOPLE
+            ================================================== -->
+
+            <div class="share-section">
+
+
+                <h3>
+                    Share with people
+                </h3>
+
+
+                <div class="share-input-row">
+
+
+                    <!-- EMAIL -->
+
+                    <input
+                        type="email"
+                        id="shareEmail"
+                        placeholder="Enter email address"
+                        autocomplete="off"
+                    >
+
+
+                    <!-- ROLE -->
+
+                    <select id="shareRole">
+
+                        <option value="viewer">
+                            Viewer
+                        </option>
+
+                        <option value="editor">
+                            Editor
+                        </option>
+
+                    </select>
+
+
+                    <!-- SEND -->
+
+                    <button
+                        type="button"
+                        id="sendShareButton"
+                        class="share-send-button"
+                    >
+                        Send
+                    </button>
+
+
+                </div>
+
+                <label class="execute-option" for="shareExecute">
+                    <input type="checkbox" id="shareExecute">
+                    <span>Allow execute permission</span>
+                </label>
+
+
+                <!-- MESSAGE -->
+
+                <div
+                    id="shareMessage"
+                    class="share-message"
+                ></div>
+
+
+            </div>
+
+
+
+            <!-- =================================================
+                 PEOPLE WITH ACCESS
+            ================================================== -->
+
+            <div class="share-section">
+
+
+                <h3>
+                    People with access
+                </h3>
+
+
+                <div id="sharedUsers">
+
+
+                    <div class="no-shared-users">
+
+                        <span>
+                            👤
+                        </span>
+
+                        <span>
+                            No other users have access
+                        </span>
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- =================================================
+                 GENERAL ACCESS
+            ================================================== -->
+
+            <div class="share-section share-general-access">
+
+
+                <h3>
+                    General access
+                </h3>
+
+
+
+                <!-- =================================================
+                     RESTRICTED
+                ================================================== -->
+
+                <label
+                    class="general-access-option"
+                    for="generalRestricted"
+                >
+
+
+                    <input
+                        type="radio"
+                        name="generalAccess"
+                        id="generalRestricted"
+                        value="restricted"
+                        checked
+                    >
+
+
+                    <div class="general-access-icon">
+                        🔒
+                    </div>
+
+
+                    <div class="general-access-text">
+
+                        <strong>
+                            Restricted
+                        </strong>
+
+                        <span>
+                            Only people with access can open this file
+                        </span>
+
+                    </div>
+
+
+                </label>
+
+
+
+                <!-- =================================================
+                     ANYONE WITH LINK
+                ================================================== -->
+
+                <label
+                    class="general-access-option"
+                    for="generalAnyone"
+                >
+
+
+                    <input
+                        type="radio"
+                        name="generalAccess"
+                        id="generalAnyone"
+                        value="anyone"
+                    >
+
+
+                    <div class="general-access-icon">
+                        🌐
+                    </div>
+
+
+                    <div class="general-access-text">
+
+                        <strong>
+                            Anyone with the link
+                        </strong>
+
+                        <span>
+                            Anyone who has the link can access
+                        </span>
+
+                    </div>
+
+
+                </label>
+
+
+
+                <!-- =================================================
+                     PUBLIC ACCESS OPTIONS
+                ================================================== -->
+
+                <div
+                    id="publicAccessOptions"
+                    class="public-access-options"
+                    style="display:none;"
+                >
+
+
+                    <!-- ROLE -->
+
+                    <div class="public-access-row">
+
+
+                        <label
+                            for="publicRole"
+                        >
+                            Access level
+                        </label>
+
+
+                        <select id="publicRole">
+
+                            <option value="viewer">
+                                Viewer
+                            </option>
+
+                            <option value="editor">
+                                Editor
+                            </option>
+
+                        </select>
+
+
+                    </div>
+
+
+
+                    <!-- EXECUTE -->
+
+                    <label
+                        class="execute-option"
+                        for="publicExecute"
+                    >
+
+
+                        <input
+                            type="checkbox"
+                            id="publicExecute"
+                        >
+
+
+                        <span>
+                            Allow execute permission
+                        </span>
+
+
+                    </label>
+
+
+
+                    <!-- =================================================
+                         SHARE LINK
+                    ================================================== -->
+
+                    <div
+                        id="shareLinkContainer"
+                        class="share-link-container"
+                        style="display:none;"
+                    >
+
+
+                        <input
+                            type="text"
+                            id="shareLink"
+                            readonly
+                            placeholder="Share link"
+                        >
+
+
+                        <button
+                            type="button"
+                            id="copyShareLinkButton"
+                            class="copy-link-button"
+                        >
+                            Copy link
+                        </button>
+
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- =================================================
+                 FOOTER
+            ================================================== -->
+
+            <div class="share-footer">
+
+
+                <!-- CANCEL -->
+
+                <button
+                    type="button"
+                    id="cancelShareButton"
+                    class="share-cancel-button"
+                >
+                    Cancel
+                </button>
+
+
+                <!-- DONE -->
+
+                <button
+                    type="button"
+                    id="doneShareButton"
+                    class="share-done-button"
+                >
+                    Done
+                </button>
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- =====================================================
+         DASHBOARD JAVASCRIPT
+    ====================================================== -->
+
+    <script src="/js/confirm.js"></script>
+    <script src="/js/dashboard.js?v=folder-public-link"></script>
+
+
+</body>
+
+</html>

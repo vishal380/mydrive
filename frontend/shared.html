@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shared file - MyDrive</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        .shared-page { min-height: 100vh; display: grid; place-items: center; padding: 24px; background: #f5f7fb; }
+        .shared-card { width: min(760px, 100%); padding: 32px; border-radius: 16px; background: #fff; box-shadow: 0 12px 40px #18243a18; }
+        .shared-card h1 { margin: 0 0 8px; overflow-wrap: anywhere; }
+        .shared-meta { color: #64748b; margin-bottom: 24px; }
+        .shared-preview { width: 100%; height: min(65vh, 640px); border: 1px solid #e2e8f0; border-radius: 10px; }
+        .shared-actions { display: flex; gap: 12px; margin-top: 20px; }
+        .shared-error { color: #b42318; }
+        @media (max-width: 520px) { .shared-card { padding: 22px; } }
+    </style>
+</head>
+<body>
+    <main class="shared-page">
+        <section class="shared-card" aria-live="polite">
+            <p>MyDrive shared file</p>
+            <h1 id="fileName">Loading shared file…</h1>
+            <p id="fileDetails" class="shared-meta"></p>
+            <p id="sharedError" class="shared-error" hidden></p>
+            <iframe id="filePreview" class="shared-preview" title="Shared file preview" hidden></iframe>
+            <div class="shared-actions">
+                <a id="downloadFile" class="btn primary" hidden>Download</a>
+                <a class="btn secondary" href="/">Go to MyDrive</a>
+            </div>
+        </section>
+    </main>
+    <script src="/js/shared.js"></script>
+</body>
+</html>

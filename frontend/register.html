@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Create Account - MyDrive</title>
+
+    <link
+        rel="stylesheet"
+        href="/css/style.css"
+    >
+</head>
+
+<body>
+
+    <div class="auth-page">
+
+        <div class="auth-card">
+
+            <div class="auth-logo">
+                ☁
+            </div>
+
+            <h1>Create Account</h1>
+
+            <p class="auth-subtitle">
+                Create your MyDrive account
+            </p>
+
+            <form id="registerForm">
+
+                <div class="form-group">
+
+                    <label for="username">
+                        Username
+                    </label>
+
+                    <input
+                        type="text"
+                        id="username"
+                        name="username"
+                        placeholder="Enter username"
+                        minlength="3"
+                        required
+                    >
+
+                </div>
+
+                <div class="form-group">
+
+                    <label for="email">
+                        Email
+                    </label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="Enter email"
+                        required
+                    >
+
+                </div>
+
+                <div class="form-group">
+                    <label for="registrationOtp">Email verification code</label>
+                    <div class="share-input-row">
+                        <input
+                            type="text"
+                            id="registrationOtp"
+                            name="otp"
+                            inputmode="numeric"
+                            autocomplete="one-time-code"
+                            pattern="[0-9]{6}"
+                            maxlength="6"
+                            placeholder="6-digit code"
+                            required
+                        >
+                        <button type="button" id="sendRegistrationOtp" class="auth-button">
+                            Send code
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+
+                    <label for="password">
+                        Password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="Minimum 8 characters"
+                        minlength="8"
+                        required
+                    >
+
+                </div>
+
+                <div class="form-group">
+
+                    <label for="confirmPassword">
+                        Confirm Password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="confirmPassword"
+                        name="confirmPassword"
+                        placeholder="Confirm password"
+                        minlength="8"
+                        required
+                    >
+
+                </div>
+
+                <div
+                    id="registerMessage"
+                    class="message"
+                ></div>
+
+                <button
+                    type="submit"
+                    class="auth-button"
+                >
+                    Create Account
+                </button>
+
+            </form>
+
+            <p class="auth-footer">
+
+                Already have an account?
+
+                <a href="/login.html">
+                    Login
+                </a>
+
+            </p>
+
+        </div>
+
+    </div>
+
+    <script src="/js/register.js"></script>
+
+</body>
+
+</html>

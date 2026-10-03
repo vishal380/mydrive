@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trash - MyDrive</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        .trash-page { max-width: 1000px; margin: 0 auto; padding: 40px 24px; }
+        .trash-header { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 24px; }
+        .trash-list { display: grid; gap: 12px; }
+        .trash-item { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 16px; border: 1px solid #e2e8f0; border-radius: 10px; background: #fff; }
+        .trash-name { font-weight: 600; overflow-wrap: anywhere; }
+        .trash-meta { margin-top: 4px; color: #64748b; font-size: 13px; }
+        .trash-actions { display: flex; gap: 8px; flex-shrink: 0; }
+        .trash-actions button { padding: 8px 12px; border: 1px solid #cbd5e1; border-radius: 7px; background: #fff; cursor: pointer; }
+        .trash-actions .permanent-delete { color: #b42318; }
+        .trash-header-actions { display: flex; align-items: center; gap: 10px; }
+        .empty-trash-button { padding: 10px 14px; border: 1px solid #b42318; border-radius: 8px; background: #fff; color: #b42318; font: inherit; font-weight: 600; cursor: pointer; }
+        .empty-trash-button:disabled { opacity: .5; cursor: not-allowed; }
+        @media (max-width: 600px) { .trash-item { align-items: flex-start; flex-direction: column; } }
+    </style>
+</head>
+<body>
+    <main class="trash-page">
+        <header class="trash-header">
+            <div><h1>Trash</h1><p>Restore files or permanently delete them.</p></div>
+            <div class="trash-header-actions">
+                <button id="emptyTrashButton" class="empty-trash-button" type="button" disabled>Empty Trash</button>
+                <a class="btn secondary" href="/dashboard.html">Back to My Drive</a>
+            </div>
+        </header>
+        <div id="trashMessage" role="status" aria-live="polite">Loading Trash…</div>
+        <div id="trashList" class="trash-list"></div>
+    </main>
+    <script src="/js/confirm.js"></script>
+    <script src="/js/trash.js"></script>
+</body>
+</html>

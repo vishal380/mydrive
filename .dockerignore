@@ -1,0 +1,12 @@
+.git
+.gitignore
+.env
+.env.*
+backend/.env
+backend/node_modules
+backend/logs
+frontend/node_modules
+node_modules
+storage
+**/npm-debug.log*
+**/.DS_Store
